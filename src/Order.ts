@@ -1,9 +1,10 @@
+import Coupon from "./Coupon";
 import CPF from "./CPF";
 import OrderItem from "./OrderItem";
 
 export default class Order {
-    
-    constructor(public cpf:CPF, public items:OrderItem[]){
+
+    constructor(public cpf:CPF, public items:OrderItem[], public coupons?: Coupon[]){
         this.validate();
     }
 
@@ -12,13 +13,33 @@ export default class Order {
     }
 
     private hasItems(){
-        return !!this.items && !!this.items.length
+        return !!this.items && !!this.items.length;
     }
 
-    public getTotal(){
+    private hasCoupons(){
+        return !!this.coupons && !!this.coupons.length;
+    }
+
+    private getSum(){
         return this.items.reduce((accumulator, item) => {
             return accumulator + item.getTotal();
         }, 0);
     }
+
+    private calculateClosingPrice(){
+        let closingPriece = this.getSum()
+        closingPriece -= closingPriece * this.coupons.reduce((accumulator, coupon) => {
+            return accumulator + coupon.getDiscountPercent();
+        }, 0);
+        return closingPriece;
+    }
+
+    public getClosingPriece(): any {
+        if(!this.hasCoupons()) return this.getSum();
+        return this.calculateClosingPrice();
+    }
+
+
+    
 
 }
