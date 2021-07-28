@@ -1,9 +1,10 @@
+
+const FACTOR_DIGIT_1 = 10;
+const FACTOR_DIGIT_2 = 11;
+const MAX_DIGITS_1 = 9;
+const MAX_DIGITS_2 = 10;
 export default class CPF {
 
-    private readonly FACTOR_DIGIT_1 = 10;
-    private readonly FACTOR_DIGIT_2 = 11;
-    private readonly MAX_DIGITS_1 = 9;
-    private readonly MAX_DIGITS_2 = 10;
 
     constructor(private cpf: string) {
         this.validate()
@@ -18,8 +19,8 @@ export default class CPF {
         const cpfClean = this.extractDigits();
         if (this.isInvalidLength(cpfClean)) return false;
         if (this.isBlocked(cpfClean)) return false;
-        const digit1 = this.calculateDigit(cpfClean, this.FACTOR_DIGIT_1, this.MAX_DIGITS_1);
-        const digit2 = this.calculateDigit(cpfClean, this.FACTOR_DIGIT_2, this.MAX_DIGITS_2);
+        const digit1 = this.calculateDigit(cpfClean, FACTOR_DIGIT_1, MAX_DIGITS_1);
+        const digit2 = this.calculateDigit(cpfClean, FACTOR_DIGIT_2, MAX_DIGITS_2);
         let calculatedCheckDigit = `${digit1}${digit2}`;
         return this.getCheckDigit(cpfClean) == calculatedCheckDigit;
     }
