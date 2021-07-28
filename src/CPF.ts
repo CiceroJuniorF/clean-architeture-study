@@ -1,4 +1,4 @@
-export default class cpfClean {
+export default class CPF {
 
     private readonly FACTOR_DIGIT_1 = 10;
     private readonly FACTOR_DIGIT_2 = 11;
