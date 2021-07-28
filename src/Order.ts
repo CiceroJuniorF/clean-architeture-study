@@ -27,11 +27,8 @@ export default class Order {
     }
 
     private calculateClosingPrice(){
-        let closingPriece = this.getSum()
-        closingPriece -= closingPriece * this.coupons.reduce((accumulator, coupon) => {
-            return accumulator + coupon.getDiscountPercent();
-        }, 0);
-        return closingPriece;
+        let ammount = this.getSum()
+        return ammount - ( ammount * this.coupons.reduce((accumulator, coupon) => { return accumulator + coupon.getDiscountPercent(); }, 0));
     }
 
     public getClosingPriece(): any {
