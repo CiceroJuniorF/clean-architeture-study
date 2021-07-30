@@ -13,8 +13,15 @@ export default class Coupon{
         return !!this.discount && this.discount > 0;
     }
 
-    getDiscountPercent(): number {
+    public getDiscountPercent(): number {
         return (this.discount / B100);
+    }
+
+    public static options():Coupon[]{
+        return [
+            new Coupon("VALE20", 20),
+            new Coupon("VALE21", 21)
+        ];
     }
 
 }

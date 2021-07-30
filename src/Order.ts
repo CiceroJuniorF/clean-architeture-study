@@ -31,7 +31,7 @@ export default class Order {
         return ammount - ( ammount * this.coupons.reduce((accumulator, coupon) => { return accumulator + coupon.getDiscountPercent(); }, 0));
     }
 
-    public getClosingPriece(): any {
+    public getTotalPrice(): any {
         if(!this.hasCoupons()) return this.getSum();
         return this.calculateClosingPrice();
     }
