@@ -6,10 +6,10 @@ import Coupon from "../src/Coupon";
 test("Deve lançar exceção 'Items not be empty' ", ()=>{    
     expect(()=>{
         const order = new Order(getCpf(), [])
-    }).toThrow('Items not be empty');
+    }).toThrow('Items cannot be empty');
 });
 
-test("Deve fazer um pedido com 3 itens", ()=>{    
+test("Deve criar um pedido com 3 itens", ()=>{    
     expect(()=>{
         const orderItem1 = new OrderItem("Bola", 100, 1);
         const orderItem2 = new OrderItem("Tênis", 100, 2);

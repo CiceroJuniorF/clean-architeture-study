@@ -9,7 +9,7 @@ export default class Order {
     }
 
     private validate(){
-        if(!this.hasItems()) throw "Items not be empty";
+        if(!this.hasItems()) throw "Items cannot be empty";
     }
 
     private hasItems(){
