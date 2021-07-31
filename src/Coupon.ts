@@ -13,7 +13,7 @@ export default class Coupon{
         return !!this.discount && this.discount > 0;
     }
 
-    getDiscountPercent(): number {
+    public getDiscountPercent(): number {
         return (this.discount / B100);
     }
 

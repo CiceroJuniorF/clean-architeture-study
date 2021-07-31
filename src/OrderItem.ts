@@ -5,19 +5,19 @@ export default class OrderItem {
 
     private validate() {
         if (!this.hasDescription()) throw "Invalid description";
-        if (!this.isPriceMoreZero()) throw "Invalid price";
-        if (!this.isQuantityMoreZero()) throw "Invalid quantity";
+        if (!this.isPriceGreaterThanZero()) throw "Invalid price";
+        if (!this.isQuantityGreaterThanZero()) throw "Invalid quantity";
     }
 
     private hasDescription() {
         return !!this.description;
     }
 
-    private isPriceMoreZero() {
+    private isPriceGreaterThanZero() {
         return this.price > 0
     }
 
-    private isQuantityMoreZero() {
+    private isQuantityGreaterThanZero() {
         return this.quantity > 0
     }
 
