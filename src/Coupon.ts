@@ -17,11 +17,4 @@ export default class Coupon{
         return (this.discount / B100);
     }
 
-    public static options():Coupon[]{
-        return [
-            new Coupon("VALE20", 20),
-            new Coupon("VALE21", 21)
-        ];
-    }
-
 }

@@ -1,3 +1,5 @@
+import CouponRepository from "../src/CouponRepository";
+import ICouponRepository from "../src/ICouponRepository";
 import PlaceOrder from "../src/PlaceOrder";
 import PlaceOrderInput from "../src/PlaceOrderInput";
 
@@ -10,7 +12,8 @@ test("Deve fazer um pedido com 3 itens (com descrição, preço e quantidade)", 
             { description : "Meião", price: 100, quantity: 3},
         ]
     }
-    const placeOrder = new PlaceOrder();
+    const counponRepository: ICouponRepository = new CouponRepository();
+    const placeOrder = new PlaceOrder(counponRepository);
     const output = placeOrder.execute(input);
     expect(output.total).toBe(600);   
 });
@@ -28,7 +31,8 @@ test("Deve fazer um pedido com cupom de desconto (percentual sobre o total do pe
             "VALE21"
         ]
     }
-    const placeOrder = new PlaceOrder();
+    const counponRepository: ICouponRepository = new CouponRepository();
+    const placeOrder = new PlaceOrder(counponRepository);
     const output = placeOrder.execute(input);
     expect(output.total).toBe(354);   
 });
