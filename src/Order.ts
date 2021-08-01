@@ -29,15 +29,16 @@ export default class Order {
 
     private calculateTotalPrice(){
         let ammount = this.getSum()
-        return ammount - ( ammount * this.coupons.reduce((accumulator, coupon) => { return accumulator + coupon.getDiscountPercent(); }, 0));
+        return ammount - ( ammount * this.getCouponsApplicable().reduce((accumulator, coupon) => { return accumulator + coupon.getDiscountPercent(); }, 0));
+    }
+
+    public getCouponsApplicable(){
+        return this.coupons?.filter(c => c.isApplicable())
     }
 
     public getTotalPrice(): number {
         if(!this.hasCoupons()) return this.getSum();
         return Number(this.calculateTotalPrice().toFixed(2));
-    }
-
-
-    
+    }    
 
 }

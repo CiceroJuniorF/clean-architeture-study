@@ -30,7 +30,7 @@ export default class PlaceOrder{
         return coupons?.map(c => {
             const couponData = this.counponRepostiroy.find(c)
             if(!couponData) throw `Counpon ${c} does not exists`;
-            return new Coupon(couponData.code, couponData.discount);
+            return new Coupon(couponData.code, couponData.discount, couponData.expirationDate);
         });
     }
 

@@ -4,6 +4,7 @@ import CouponRepository from "../src/CouponRepository";
 import ICouponRepository from "../src/ICouponRepository";
 import PlaceOrder from "../src/PlaceOrder";
 import PlaceOrderInput from "../src/PlaceOrderInput";
+import PlaceOrderOutput from "../src/PlaceOrderOutput";
 
 test("Deve fazer um pedido com 3 itens (com descrição, preço e quantidade)", ()=> {
     const width = 20;
@@ -50,7 +51,7 @@ test("Deve fazer um pedido com cupom de desconto (percentual sobre o total do pe
 });
 
 
-test("Deve fazer um pedido com cupom de desconto (percentual sobre o total do pedido)", ()=> {
+test("Deve lançar um erro `Counpon VALE23 does not exists` pois o cupom não existe", ()=> {
     const input:PlaceOrderInput = {
         cpf: "487.501.680-88",
         items: [
@@ -68,9 +69,32 @@ test("Deve fazer um pedido com cupom de desconto (percentual sobre o total do pe
     }
     const distaceFactorAdapter:IDistaceFactorAdapter = new DistaceFactorAdapter();
     const counponRepository: ICouponRepository = new CouponRepository();
-    const placeOrder = new PlaceOrder(counponRepository, distaceFactorAdapter);
-    
+    const placeOrder = new PlaceOrder(counponRepository, distaceFactorAdapter);    
     expect(()=>{
         const output = placeOrder.execute(input);
     }).toThrow(`Counpon VALE23 does not exists`);
+});
+
+
+test("Serão passado 3 cupons VALE20, VALE21, VALE22, porém VALE22 está vencido, logo não deve ser aplicado", ()=> {
+    const input:PlaceOrderInput = {
+        cpf: "487.501.680-88",
+        items: [
+            { description : "Bola", price: 100, quantity: 1, width: 20, height: 15, depth: 10, weight: 1},
+            { description : "Tênis", price: 100, quantity: 2, width: 20, height: 15, depth: 10, weight: 1},
+            { description : "Meião", price: 200, quantity: 3, width: 20, height: 15, depth: 10, weight: 1},
+        ],
+        cepSender:"68010-590", 
+        cepRecipient:"53402-540",
+        coupons: [
+            "VALE20",
+            "VALE21",
+            "VALE22"
+        ]
+    }
+    const distaceFactorAdapter:IDistaceFactorAdapter = new DistaceFactorAdapter();
+    const counponRepository: ICouponRepository = new CouponRepository();
+    const placeOrder = new PlaceOrder(counponRepository, distaceFactorAdapter);
+    const output:PlaceOrderOutput = placeOrder.execute(input);    
+    expect(output.total).toBe(566.36);  
 });
