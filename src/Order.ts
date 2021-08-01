@@ -4,7 +4,7 @@ import OrderItem from "./OrderItem";
 
 export default class Order {
 
-    constructor(public cpf:CPF, public items:OrderItem[], public coupons?: Coupon[]){
+    constructor(private cpf:CPF, private items:OrderItem[], private distanceFactor:number, private coupons?: Coupon[]){
         this.validate();
     }
 
@@ -22,18 +22,19 @@ export default class Order {
 
     private getSum(){
         return this.items.reduce((accumulator, item) => {
-            return accumulator + item.getTotal();
+            return accumulator 
+                    + ( item.price + ( this.distanceFactor * item.dimesions.getVolume() * (item.dimesions.getDensity() / 100) ) ) * item.quantity
         }, 0);
     }
 
-    private calculateClosingPrice(){
+    private calculateTotalPrice(){
         let ammount = this.getSum()
         return ammount - ( ammount * this.coupons.reduce((accumulator, coupon) => { return accumulator + coupon.getDiscountPercent(); }, 0));
     }
 
-    public getTotalPrice(): any {
+    public getTotalPrice(): number {
         if(!this.hasCoupons()) return this.getSum();
-        return this.calculateClosingPrice();
+        return Number(this.calculateTotalPrice().toFixed(2));
     }
 
 

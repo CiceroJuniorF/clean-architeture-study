@@ -1,5 +1,7 @@
+import OrderItemDimensions from "./OrderItemDimensions";
+
 export default class OrderItem {
-    constructor(public description: string, public price: number, public quantity: number) {
+    constructor(private description: string, public price: number, public quantity: number, public dimesions: OrderItemDimensions) {
         this.validate();
     }
 
@@ -7,6 +9,7 @@ export default class OrderItem {
         if (!this.hasDescription()) throw "Invalid description";
         if (!this.isPriceGreaterThanZero()) throw "Invalid price";
         if (!this.isQuantityGreaterThanZero()) throw "Invalid quantity";
+        if (!this.hasDimensions()) throw "Invalid dimensions";
     }
 
     private hasDescription() {
@@ -21,8 +24,8 @@ export default class OrderItem {
         return this.quantity > 0
     }
 
-    public getTotal(){
-        return this.quantity * this.price;
+    private hasDimensions() {
+        return !!this.dimesions;
     }
 
 }

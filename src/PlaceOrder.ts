@@ -1,33 +1,40 @@
 import Coupon from "./Coupon";
 import CPF from "./CPF";
 import ICouponRepository from "./ICouponRepository";
+import IDistaceFactorAdapter from "./IDistanceFactorAdapter";
 import Order from "./Order";
 import OrderItem from "./OrderItem";
+import OrderItemDimensions from "./OrderItemDimensions";
 import PlaceOrderInput from "./PlaceOrderInput";
 import PlaceOrderOutput from "./PlaceOrderOutput";
 
 export default class PlaceOrder{
        
-    constructor(private counponRepostiroy:ICouponRepository){}
+    constructor(private counponRepostiroy:ICouponRepository, private distaceFactorAdapter:IDistaceFactorAdapter){}
 
     public execute(input:PlaceOrderInput): PlaceOrderOutput{
-        const order:Order = new Order(this.createCpf(input), this.creatOrderItems(input), this.createCoupons(input));
+        const order:Order = new Order(this.createCpf(input), this.createOrderItems(input), 
+        this.getDistanceFactor(input), this.createCoupons(input));
         return {total: order.getTotalPrice()};
     }
 
-    public createCpf({cpf}:PlaceOrderInput):CPF{
+    private createCpf({cpf}:PlaceOrderInput):CPF{
         return new CPF(cpf);
     }
 
-    public creatOrderItems({items}:PlaceOrderInput): OrderItem[]{
-        return items.map(i => new OrderItem(i.description, i.price, i.quantity));
+    private createOrderItems({items}:PlaceOrderInput): OrderItem[]{
+        return items.map(i => new OrderItem(i.description, i.price, i.quantity, new OrderItemDimensions(i.width, i.height, i.depth, i.weight)));
     }
 
-    public createCoupons({coupons}:PlaceOrderInput):Coupon[]{
+    private createCoupons({coupons}:PlaceOrderInput):Coupon[]{
         return coupons?.map(c => {
             const couponData = this.counponRepostiroy.find(c)
             return new Coupon(couponData.code, couponData.discount);
         });
+    }
+
+    private getDistanceFactor({cepRecipient, cepSender}:PlaceOrderInput):number{
+        return this.distaceFactorAdapter.getFactor(cepSender, cepRecipient);
     }
 
     
