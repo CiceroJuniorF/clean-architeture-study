@@ -29,6 +29,7 @@ export default class PlaceOrder{
     private createCoupons({coupons}:PlaceOrderInput):Coupon[]{
         return coupons?.map(c => {
             const couponData = this.counponRepostiroy.find(c)
+            if(!couponData) throw `Counpon ${c} does not exists`;
             return new Coupon(couponData.code, couponData.discount);
         });
     }

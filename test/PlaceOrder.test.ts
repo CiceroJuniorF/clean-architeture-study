@@ -48,3 +48,29 @@ test("Deve fazer um pedido com cupom de desconto (percentual sobre o total do pe
     const output = placeOrder.execute(input);
     expect(output.total).toBe(566.36);   
 });
+
+
+test("Deve fazer um pedido com cupom de desconto (percentual sobre o total do pedido)", ()=> {
+    const input:PlaceOrderInput = {
+        cpf: "487.501.680-88",
+        items: [
+            { description : "Bola", price: 100, quantity: 1, width: 20, height: 15, depth: 10, weight: 1},
+            { description : "Tênis", price: 100, quantity: 2, width: 20, height: 15, depth: 10, weight: 1},
+            { description : "Meião", price: 200, quantity: 3, width: 20, height: 15, depth: 10, weight: 1},
+        ],
+        cepSender:"68010-590", 
+        cepRecipient:"53402-540",
+        coupons: [
+            "VALE20",
+            "VALE21",
+            "VALE23"
+        ]
+    }
+    const distaceFactorAdapter:IDistaceFactorAdapter = new DistaceFactorAdapter();
+    const counponRepository: ICouponRepository = new CouponRepository();
+    const placeOrder = new PlaceOrder(counponRepository, distaceFactorAdapter);
+    
+    expect(()=>{
+        const output = placeOrder.execute(input);
+    }).toThrow(`Counpon VALE23 does not exists`);
+});
